@@ -1,0 +1,44 @@
+{
+  "name": "curbyourlitter-pavement",
+  "version": "0.0.1",
+  "description": "Block ratings for Curb Your Litter",
+  "main": "app/scripts/app.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/curbyourlitter/curbyourlitter-pavement.git"
+  },
+  "author": "Eric Brelsford <ebrelsford@gmail.com> (http://ebrelsford.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/curbyourlitter/curbyourlitter-pavement/issues"
+  },
+  "homepage": "https://github.com/curbyourlitter/curbyourlitter-pavement#readme",
+  "dependencies": {
+    "cartodb": "^0.2.1",
+    "history": "^1.9.0",
+    "moment": "^2.10.6",
+    "moment-timezone": "^0.4.0",
+    "react": "^0.13.3",
+    "react-router": "^1.0.0-beta4"
+  },
+  "devDependencies": {
+    "babelify": "^6.2.0",
+    "browser-sync": "^2.9.3",
+    "browserify": "^11.1.0",
+    "connect-history-api-fallback": "^1.1.0",
+    "del": "^2.0.2",
+    "envify": "^3.4.0",
+    "gulp": "^3.9.0",
+    "gulp-less": "^3.0.3",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-size": "^2.0.0",
+    "gulp-useref": "^1.3.0",
+    "gulp-util": "^3.0.6",
+    "path": "^0.12.7",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
+  }
+}
