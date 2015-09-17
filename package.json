@@ -23,7 +23,7 @@
     "moment": "^2.10.6",
     "moment-timezone": "^0.4.0",
     "react": "^0.13.3",
-    "react-router": "^1.0.0-beta4"
+    "react-router": "^1.0.0-rc1"
   },
   "devDependencies": {
     "babelify": "^6.2.0",
