@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Router } from 'react-router';
 import createHistory from 'history/lib/createBrowserHistory';
 
-import { RatingsMap } from './map.jsx';
-import { Rate } from './rate.jsx';
+import { RatingsMap } from './map';
+import { Rate } from './rate';
 
 export function init(opts) {
     var mountNode = document.getElementById(opts.appDOMId);
