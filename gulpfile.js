@@ -43,14 +43,14 @@ gulp.task('html', function() {
 
 
 var bundler = watchify(
-    browserify({
-    entries: [sourceFile],
-    debug: true,
-    insertGlobals: true,
-    cache: {},
-    packageCache: {},
-    fullPaths: true
-}))
+        browserify({
+        entries: [sourceFile],
+        debug: true,
+        insertGlobals: true,
+        cache: {},
+        packageCache: {},
+        fullPaths: true
+    }))
     .transform(babelify)
     .transform(envify({ NODE_ENV: 'watching_development' }));
 
