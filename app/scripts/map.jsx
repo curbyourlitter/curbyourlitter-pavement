@@ -51,7 +51,7 @@ export var RatingsMap = React.createClass({
                 });
 
                 this.streetLayer.on('featureClick', (event, latlng, pos, data) => {
-                    this.history.pushState(null, ratingsConfig.rootPath + 'rate/' + data.cartodb_id);
+                    this.history.pushState(null, `${ratingsConfig.rootPath}rate/${data.cartodb_id}`);
                     cartodbSql.execute('SELECT the_geom FROM {{ table }} WHERE cartodb_id = {{ id }}', {
                         id: data.cartodb_id,
                         table: 'streets'
