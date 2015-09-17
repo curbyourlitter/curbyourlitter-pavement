@@ -43,7 +43,7 @@ gulp.task('html', function() {
 
 
 var bundler = watchify(
-        browserify({
+    browserify({
         entries: [sourceFile],
         debug: true,
         insertGlobals: true,
