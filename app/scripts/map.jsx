@@ -1,10 +1,10 @@
 import React from 'react';
-import { Navigation } from 'react-router';
+import { History } from 'react-router';
 
 var cartodbSql = new cartodb.SQL({ user: 'curbyourlitter' });
 
 export var RatingsMap = React.createClass({
-    mixins: [Navigation],
+    mixins: [History],
 
     componentDidMount: function () {
         var id = React.findDOMNode(this.refs.map).id;
@@ -51,7 +51,7 @@ export var RatingsMap = React.createClass({
                 });
 
                 this.streetLayer.on('featureClick', (event, latlng, pos, data) => {
-                    this.transitionTo(ratingsConfig.rootPath + 'rate/' + data.cartodb_id);
+                    this.history.pushState(null, ratingsConfig.rootPath + 'rate/' + data.cartodb_id);
                     cartodbSql.execute('SELECT the_geom FROM {{ table }} WHERE cartodb_id = {{ id }}', {
                         id: data.cartodb_id,
                         table: 'streets'
