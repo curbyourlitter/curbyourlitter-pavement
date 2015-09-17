@@ -45,6 +45,8 @@ gulp.task('html', function() {
 var bundler = watchify(
     browserify({
         entries: [sourceFile],
+        paths: ['./node_modules', './app/scripts'],
+        extensions: ['.js', '.jsx'],
         debug: true,
         insertGlobals: true,
         cache: {},
