@@ -15,7 +15,7 @@ function mapStateToProps(state) {
 export var RatingsMap = connect(mapStateToProps)(React.createClass({
     mixins: [History],
 
-    ratingSql: 'SELECT MIN(streets.cartodb_id) AS cartodb_id, ST_collect(streets.the_geom_webmercator) AS the_geom_webmercator, AVG(ratings.rating) AS avg FROM street_ratings ratings LEFT JOIN streets ON ratings.segment_id = streets.cartodb_id',
+    ratingSql: 'SELECT ST_collect(streets.the_geom_webmercator) AS the_geom_webmercator, AVG(ratings.rating) FROM street_ratings ratings LEFT JOIN streets ON ratings.segment_id = streets.cartodb_id GROUP BY ratings.segment_id',
 
     componentDidMount: function () {
         var id = React.findDOMNode(this.refs.map).id;
@@ -46,11 +46,11 @@ export var RatingsMap = connect(mapStateToProps)(React.createClass({
             sublayers: [
                 {
                     sql: 'SELECT * FROM streets',
-                    cartocss: '#streets { line-width: 10; line-color: gray; line-opacity: 1; }'
+                    cartocss: '#streets { line-width: 7; line-color: gray; line-opacity: 1; }'
                 },
                 {
                     sql: this.ratingSql,
-                    cartocss: '#ratings { line-width: 10; line-color: red; line-opacity: 1; }'
+                    cartocss: '#ratings { line-width: 7; line-color: blue; line-opacity: 1; [avg<=1] { line-color: #229A00; } [avg>1][avg<=2] { line-color: #FFCC00; } [avg>2][avg<=3] { line-color: #FFA300; } [avg>3][avg<=4] { line-color: #FF5C00; } [avg>4][avg<=5] { line-color: #B81609; } }  '
                 }
             ]
         };
