@@ -53,16 +53,16 @@ var previousRatingsContainer = function (Component) {
         },
 
         componentDidMount: function () {
-            this.getData(this.props.streetId);
+            this.getRatings(this.props.streetId);
         },
 
         componentWillReceiveProps: function (nextProps) {
             if (this.props.streetId !== nextProps.streetId) {
-                this.getData(nextProps.streetId);
+                this.getRatings(nextProps.streetId);
             }
         },
 
-        getData: function (id) {
+        getRatings: function (id) {
             this.setState({ id: id });
             cartodbSql.execute('SELECT * FROM {{ table }} WHERE segment_id = {{ id }}', {
                 id: id,
@@ -74,7 +74,7 @@ var previousRatingsContainer = function (Component) {
         },
 
         reload: function () {
-            this.getData(this.props.streetId);
+            this.getRatings(this.props.streetId);
         },
 
         render: function () {
