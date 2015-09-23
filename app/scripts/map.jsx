@@ -1,15 +1,32 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { History } from 'react-router';
+
+import { ratingsRequireReload } from './actions';
 
 var cartodbSql = new cartodb.SQL({ user: 'curbyourlitter' });
 
-export var RatingsMap = React.createClass({
+function mapStateToProps(state) {
+    return {
+        ratingsRequireReload: state.ratingsRequireReload
+    };
+}
+
+export var RatingsMap = connect(mapStateToProps)(React.createClass({
     mixins: [History],
+
+    ratingSql: 'SELECT MIN(streets.cartodb_id) AS cartodb_id, ST_collect(streets.the_geom_webmercator) AS the_geom_webmercator, AVG(ratings.rating) AS avg FROM street_ratings ratings LEFT JOIN streets ON ratings.segment_id = streets.cartodb_id',
 
     componentDidMount: function () {
         var id = React.findDOMNode(this.refs.map).id;
         this.initLeaflet(id);
         this.initCartoDB();
+    },
+
+    componentDidUpdate: function (prevProps, prevState) {
+        // Reload the rating layer
+        this.ratingLayer.setSQL(this.ratingSql);
+        this.props.dispatch(ratingsRequireReload(false));
     },
 
     initLeaflet: function (id) {
@@ -23,14 +40,19 @@ export var RatingsMap = React.createClass({
 
     initCartoDB: function () {
         var mapId = React.findDOMNode(this.refs.map).id;
-        // TODO style as in the app
         var visJson = {
             user_name: 'curbyourlitter',
             type: 'cartodb',
-            sublayers: [{
-                sql: 'SELECT * FROM streets',
-                cartocss: '#streets { line-width: 5; line-color: red; line-opacity: 0.5; }'
-            }]
+            sublayers: [
+                {
+                    sql: 'SELECT * FROM streets',
+                    cartocss: '#streets { line-width: 10; line-color: gray; line-opacity: 1; }'
+                },
+                {
+                    sql: this.ratingSql,
+                    cartocss: '#ratings { line-width: 10; line-color: red; line-opacity: 1; }'
+                }
+            ]
         };
         cartodb.createLayer(this.map, visJson, {
             cartodb_logo: false,
@@ -42,6 +64,8 @@ export var RatingsMap = React.createClass({
                 this.streetLayer = layer.getSubLayer(0);
                 this.streetLayer.setInteraction(true);
                 this.streetLayer.setInteractivity('cartodb_id');
+
+                this.ratingLayer = layer.getSubLayer(1);
 
                 layer.on('featureOver', (e, latlng, pos, data, layerIndex) => {
                     document.getElementById(mapId).style.cursor = 'pointer';
@@ -76,4 +100,4 @@ export var RatingsMap = React.createClass({
             <div ref="map" id="map" className="ratings-map"></div>
         );
     }
-});
+}));

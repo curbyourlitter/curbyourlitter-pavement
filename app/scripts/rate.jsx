@@ -1,6 +1,9 @@
 import moment from 'moment';
 import 'moment-timezone';
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { ratingsRequireReload } from './actions';
 
 var cartodbSql = new cartodb.SQL({ user: 'curbyourlitter' });
 
@@ -168,13 +171,18 @@ var AddRating = React.createClass({
     }
 });
 
-export var Rate = React.createClass({
+export var Rate = connect()(React.createClass({
+    onAddSuccess: function () {
+        this.refs.previousRatings.reload();
+        this.props.dispatch(ratingsRequireReload(true));
+    },
+
     render: function () {
         return (
             <div className="rating-panel">
                 <PreviousRatingsContainer ref="previousRatings" streetId={this.props.params.id}/>
-                <AddRating streetId={this.props.params.id} onSuccess={() => this.refs.previousRatings.reload()}/>
+                <AddRating streetId={this.props.params.id} onSuccess={this.onAddSuccess}/>
             </div>
         );
     }
-});
+}));
