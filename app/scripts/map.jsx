@@ -50,7 +50,7 @@ export var RatingsMap = connect(mapStateToProps)(React.createClass({
                 },
                 {
                     sql: this.ratingSql,
-                    cartocss: '#ratings { line-width: 7; line-color: blue; line-opacity: 1; [avg<=1] { line-color: #229A00; } [avg>1][avg<=2] { line-color: #FFCC00; } [avg>2][avg<=3] { line-color: #FFA300; } [avg>3][avg<=4] { line-color: #FF5C00; } [avg>4][avg<=5] { line-color: #B81609; } }  '
+                    cartocss: '#ratings { line-width: 7; line-color: blue; line-opacity: 1; [avg<=1] { line-color: #229A00; } [avg>1][avg<=2] { line-color: #FFCC00; } [avg>2][avg<=3] { line-color: #FFA300; } [avg>3][avg<=4] { line-color: #FF5C00; } [avg>4][avg<=5] { line-color: #B81609; } }'
                 }
             ]
         };
