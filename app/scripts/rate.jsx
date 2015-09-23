@@ -28,6 +28,7 @@ var PreviousRatings = React.createClass({
 
         return (
             <div className="rating-previous">
+                <h1>{this.props.street ? this.props.street.stname_lab.toLowerCase() : ''}</h1>
                 <h2>previously</h2>
                 <div>rated {this.props.ratings ? this.props.ratings.length : 0} times, average {average}:</div>
                 <ul>{ratingsList}</ul>
@@ -54,12 +55,25 @@ var previousRatingsContainer = function (Component) {
 
         componentDidMount: function () {
             this.getRatings(this.props.streetId);
+            this.getStreet(this.props.streetId);
         },
 
         componentWillReceiveProps: function (nextProps) {
             if (this.props.streetId !== nextProps.streetId) {
                 this.getRatings(nextProps.streetId);
+                this.getStreet(nextProps.streetId);
             }
+        },
+
+        getStreet: function (id) {
+            this.setState({ id: id });
+            cartodbSql.execute('SELECT * FROM {{ table }} WHERE cartodb_id = {{ id }}', {
+                id: id,
+                table: 'streets'
+            })
+                .done((data) => {
+                    this.setState({ street: data.rows[0] });
+                });
         },
 
         getRatings: function (id) {
