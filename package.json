@@ -1,6 +1,6 @@
 {
   "name": "curbyourlitter-pavement",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Block ratings for Curb Your Litter",
   "main": "lib/scripts/app.js",
   "scripts": {
