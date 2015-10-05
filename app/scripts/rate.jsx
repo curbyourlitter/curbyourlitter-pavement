@@ -14,7 +14,7 @@ var PreviousRatings = React.createClass({
         if (this.props.ratings) {
             var ratings = this.props.ratings;
             ratingsList = ratings.map(rating => {
-                return <PreviousRating key={rating.cartodb_id} {...rating}/>
+                return <PreviousRating onDelete={this.props.onDelete} key={rating.cartodb_id} {...rating}/>
             });
 
             average = ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length;
@@ -38,10 +38,21 @@ var PreviousRatings = React.createClass({
 });
 
 var PreviousRating = React.createClass({
+    handleClick: function (e) {
+        e.preventDefault();
+        cartodbSql.execute('DELETE FROM {{ table }} WHERE cartodb_id = {{ id }}', {
+            id: this.props.cartodb_id,
+            table: 'street_ratings'
+        }, { api_key: ratingsConfig.cartodbApiKey })
+            .done((data) => {
+                this.props.onDelete(this.props.cartodb_id);
+            });
+    },
+
     render: function () {
         return (
             <li className="rating-previous-item">
-                {this.props.rating} on {moment(this.props.collected).tz('GMT').format('M/D/YYYY')}
+                {this.props.rating} on {moment(this.props.collected).tz('GMT').format('M/D/YYYY')} [<a href="#" onClick={this.handleClick}>&times;</a>]
             </li>
         );
     }
@@ -93,7 +104,7 @@ var previousRatingsContainer = function (Component) {
 
         render: function () {
             return (
-                <Component {...this.state} />
+                <Component {...this.props} {...this.state} />
             );
         }
     });
@@ -191,10 +202,15 @@ export var Rate = connect()(React.createClass({
         this.props.dispatch(ratingsRequireReload(true));
     },
 
+    onDeleteSuccess: function () {
+        this.refs.previousRatings.reload();
+        this.props.dispatch(ratingsRequireReload(true));
+    },
+
     render: function () {
         return (
             <div className="rating-panel">
-                <PreviousRatingsContainer ref="previousRatings" streetId={this.props.params.id}/>
+                <PreviousRatingsContainer ref="previousRatings" onDelete={this.onDeleteSuccess} streetId={this.props.params.id}/>
                 <AddRating streetId={this.props.params.id} onSuccess={this.onAddSuccess}/>
             </div>
         );
